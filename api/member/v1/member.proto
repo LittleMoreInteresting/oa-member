@@ -1,0 +1,84 @@
+syntax = "proto3";
+
+package api.member.v1;
+
+option go_package = "oa-member/api/member/v1;v1";
+option java_multiple_files = true;
+option java_package = "api.member.v1";
+import "google/api/annotations.proto";
+// the validate rules:
+// https://github.com/envoyproxy/protoc-gen-validate
+import "validate/validate.proto";
+
+service MemberService {
+	rpc CreateMember (CreateMemberRequest) returns (CreateMemberReply){
+		option (google.api.http) = {
+			post: "/v1/member/"
+			body: "*"
+		};
+	}
+	rpc UpdateMember (UpdateMemberRequest) returns (UpdateMemberReply){
+		option (google.api.http) = {
+			put: "/v1/member/"
+			body: "*"
+		};
+	}
+	rpc DeleteMember (DeleteMemberRequest) returns (DeleteMemberReply){
+		option (google.api.http) = {
+			delete: "/v1/member/{id}"
+		};
+	}
+	rpc GetMember (GetMemberRequest) returns (GetMemberReply){
+		option (google.api.http) = {
+			delete: "/v1/member/{id}"
+		};
+	}
+	rpc ListMember (ListMemberRequest) returns (ListMemberReply){
+		option (google.api.http) = {
+			get: "/v1/members/"
+		};
+	}
+}
+
+message Member {
+	int64 id = 1;
+	string name = 2;
+	string mobile = 3;
+	string email = 4;
+}
+
+message CreateMemberRequest {
+	string name = 1 [(validate.rules).string = {min_len: 1, max_len: 20}];
+	string mobile = 2 [(validate.rules).string.len = 11];
+	string email = 3 [(validate.rules).string.email = true];
+}
+message CreateMemberReply {
+	Member member = 1;
+}
+
+message UpdateMemberRequest {
+	int64 id = 1 [(validate.rules).int64 = {gt: 0}];
+	string name = 2 [(validate.rules).string = {min_len: 1, max_len: 20}];
+	string mobile = 3 [(validate.rules).string.len = 11];
+	string email = 4 [(validate.rules).string.email = true];
+}
+message UpdateMemberReply {
+	Member member = 1;
+}
+
+message DeleteMemberRequest {
+	int64 id = 1 ;
+}
+message DeleteMemberReply {}
+
+message GetMemberRequest {
+	int64 id = 1 ;
+}
+message GetMemberReply {
+	Member member = 1;
+}
+
+message ListMemberRequest {}
+message ListMemberReply {
+	repeated Member results = 1;
+}

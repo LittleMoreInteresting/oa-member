@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package api.member.v1;
+import "errors/errors.proto";
+
+option go_package = "oa-member/api/member/v1;v1";
+option java_multiple_files = true;
+option java_package = "api.member.errors";
+option objc_class_prefix = "APIMemberErrors";
+
+enum ErrorReason {
+  option (errors.default_code) = 500;
+  MEMBER_NOT_FOUND = 0 [(errors.code) = 404];
+  CONTENT_MISSING = 1 [(errors.code) = 400];
+  PARAMS_ERROR = 2 [(errors.code) = 403];
+  DB_ACTION_ERROR = 3 [(errors.code) = 502];
+}
