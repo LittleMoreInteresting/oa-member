@@ -43,11 +43,19 @@ func (s *MemberServiceService) UpdateMember(ctx context.Context, req *pb.UpdateM
 }
 
 func (s *MemberServiceService) DeleteMember(ctx context.Context, req *pb.DeleteMemberRequest) (*pb.DeleteMemberReply, error) {
+	err := s.member.Delete(ctx, req.Id)
+	if err != nil {
+		return nil, pb.ErrorDbActionError("service: db delete error")
+	}
 	return &pb.DeleteMemberReply{}, nil
 }
 
 func (s *MemberServiceService) GetMember(ctx context.Context, req *pb.GetMemberRequest) (*pb.GetMemberReply, error) {
-	return &pb.GetMemberReply{}, nil
+	member, err := s.member.Get(ctx, req.Id)
+	if err != nil {
+		return nil, pb.ErrorMemberNotFound("member not found for ID %v", req.Id)
+	}
+	return &pb.GetMemberReply{Member: BizMember2Reply(member)}, nil
 }
 
 func (s *MemberServiceService) ListMember(ctx context.Context, req *pb.ListMemberRequest) (*pb.ListMemberReply, error) {
@@ -59,6 +67,7 @@ func (s *MemberServiceService) ListMember(ctx context.Context, req *pb.ListMembe
 	for _, member := range list {
 		result = append(result, BizMember2Reply(member))
 	}
+
 	return &pb.ListMemberReply{Results: result}, nil
 }
 

@@ -68,7 +68,11 @@ func (r *memberRepo) ListMember(ctx context.Context) ([]*biz.Member, error) {
 	return rv, nil
 }
 func (r *memberRepo) DeleteMember(ctx context.Context, id int64) error {
-	return nil
+	member, err := r.data.db.Member.Get(ctx, int(id))
+	if err != nil {
+		return err
+	}
+	return r.data.db.Member.DeleteOne(member).Exec(ctx)
 }
 
 func DbMember2BizMember(member *ent.Member) *biz.Member {

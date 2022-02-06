@@ -29,8 +29,9 @@ func NewMemberUserCase(repo MemberRepo, logger log.Logger) *MemberUserCase {
 	return &MemberUserCase{repo: repo, logHelper: log.NewHelper(logger)}
 }
 
-func (us *MemberUserCase) Create(ctx context.Context, m *Member) (*Member, error) {
-	return us.repo.CreateMember(ctx, m)
+func (us *MemberUserCase) Create(ctx context.Context, m *Member) (ms *Member, err error) {
+	ms, err = us.repo.CreateMember(ctx, m)
+	return
 }
 
 func (us *MemberUserCase) Get(ctx context.Context, id int64) (ms *Member, err error) {
@@ -43,10 +44,11 @@ func (us *MemberUserCase) Update(ctx context.Context, m *Member) (ms *Member, er
 	return
 }
 
+func (us *MemberUserCase) Delete(ctx context.Context, id int64) error {
+	return us.repo.DeleteMember(ctx, id)
+}
+
 func (us *MemberUserCase) List(ctx context.Context) (ms []*Member, err error) {
 	ms, err = us.repo.ListMember(ctx)
-	if err != nil {
-		return
-	}
 	return
 }

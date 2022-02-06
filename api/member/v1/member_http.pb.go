@@ -30,7 +30,7 @@ func RegisterMemberServiceHTTPServer(s *http.Server, srv MemberServiceHTTPServer
 	r.POST("/v1/member/", _MemberService_CreateMember0_HTTP_Handler(srv))
 	r.PUT("/v1/member/", _MemberService_UpdateMember0_HTTP_Handler(srv))
 	r.DELETE("/v1/member/{id}", _MemberService_DeleteMember0_HTTP_Handler(srv))
-	r.DELETE("/v1/member/{id}", _MemberService_GetMember0_HTTP_Handler(srv))
+	r.GET("/v1/member/{id}", _MemberService_GetMember0_HTTP_Handler(srv))
 	r.GET("/v1/members/", _MemberService_ListMember0_HTTP_Handler(srv))
 }
 
@@ -183,7 +183,7 @@ func (c *MemberServiceHTTPClientImpl) GetMember(ctx context.Context, in *GetMemb
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation("/api.member.v1.MemberService/GetMember"))
 	opts = append(opts, http.PathTemplate(pattern))
-	err := c.cc.Invoke(ctx, "DELETE", path, nil, &out, opts...)
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {
 		return nil, err
 	}

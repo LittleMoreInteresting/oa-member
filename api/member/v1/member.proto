@@ -30,7 +30,7 @@ service MemberService {
 	}
 	rpc GetMember (GetMemberRequest) returns (GetMemberReply){
 		option (google.api.http) = {
-			delete: "/v1/member/{id}"
+			get: "/v1/member/{id}"
 		};
 	}
 	rpc ListMember (ListMemberRequest) returns (ListMemberReply){

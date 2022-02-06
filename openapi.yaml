@@ -42,7 +42,7 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/CreateMemberReply'
     /v1/member/{id}:
-        delete:
+        get:
             tags:
                 - MemberService
             operationId: MemberService_GetMember
@@ -60,6 +60,24 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/GetMemberReply'
+        delete:
+            tags:
+                - MemberService
+            operationId: MemberService_DeleteMember
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: integer
+                    format: int64
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/DeleteMemberReply'
     /v1/members/:
         get:
             tags:
